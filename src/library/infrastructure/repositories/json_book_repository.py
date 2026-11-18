@@ -48,6 +48,7 @@ class JsonBookRepository(IBookRepository):
 
     def _save(self, books: Dict[str, Book]) -> None:
         payload = [self._to_dict(b) for b in books.values()]
+        self._path.parent.mkdir(parents=True, exist_ok=True)
         self._path.write_text(
             json.dumps(payload, ensure_ascii=False, indent=self._indent),
             encoding="utf-8",

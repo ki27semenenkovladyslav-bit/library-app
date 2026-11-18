@@ -46,6 +46,14 @@ class JsonRepositoryTests(RepositoryContract, unittest.TestCase):
         return JsonBookRepository(Path(self.tmp.name) / "books.json")
 
 
+class JsonRepositoryDirectoryTests(unittest.TestCase):
+    def test_creates_missing_directory(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "data" / "nested" / "books.json"
+            JsonBookRepository(path).add(Book(id="b1", title="Т", author="А", year=2000))
+            self.assertTrue(path.exists())
+
+
 class SettingsTests(unittest.TestCase):
     def test_defaults_when_file_missing(self):
         self.assertEqual(Settings.load("no-such-file.json").storage_type, "memory")
