@@ -1,0 +1,15 @@
+[build-system]
+requires = ["setuptools>=61"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "library-app"
+version = "1.0.0"
+description = "Облік книг бібліотеки (Clean Architecture, лабораторна робота №5)"
+requires-python = ">=3.10"
+
+[project.scripts]
+library = "library.presentation.cli.main:main"
+
+[tool.setuptools.packages.find]
+where = ["src"]
