@@ -64,6 +64,13 @@ class UseCaseTests(unittest.TestCase):
         titles = [b.title for b in self.list.execute()]
         self.assertEqual(titles, ["Кайдашева сім'я", "Тіні забутих предків"])
 
+    def test_list_only_available(self):
+        a = self.add.execute(AddBookRequest("Енеїда", "І. Котляревський", 1798))
+        self.add.execute(AddBookRequest("Лісова пісня", "Леся Українка", 1911))
+        self.borrow.execute(a.id, "Іван")
+        titles = [b.title for b in self.list.execute(only_available=True)]
+        self.assertEqual(titles, ["Лісова пісня"])
+
     def test_borrow_uses_default_loan_days(self):
         book = self.add.execute(AddBookRequest("Кобзар", "Т. Шевченко", 1840))
         dto = self.borrow.execute(book.id, "Олена")
