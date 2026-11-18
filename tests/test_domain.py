@@ -24,6 +24,10 @@ class BookTests(unittest.TestCase):
         with self.assertRaises(ValidationError):
             Book(id="x", title="Назва", author="Автор", year=1200)
 
+    def test_future_year_is_rejected(self):
+        with self.assertRaises(ValidationError):
+            Book(id="x", title="Назва", author="Автор", year=date.today().year + 1)
+
     def test_borrow_sets_borrower_and_due_date(self):
         book = make_book()
         book.borrow("Іван Петренко", TODAY, 14)

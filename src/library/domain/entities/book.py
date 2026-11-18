@@ -31,9 +31,10 @@ class Book:
             raise ValidationError("Назва книги не може бути порожньою")
         if not self.author:
             raise ValidationError("Автор книги не може бути порожнім")
-        if self.year < MIN_PUBLICATION_YEAR:
+        current_year = date.today().year
+        if not MIN_PUBLICATION_YEAR <= self.year <= current_year:
             raise ValidationError(
-                f"Рік видання має бути не меншим за {MIN_PUBLICATION_YEAR}"
+                f"Рік видання має бути в межах {MIN_PUBLICATION_YEAR}-{current_year}"
             )
 
     @property
