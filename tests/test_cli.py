@@ -38,6 +38,14 @@ class CliTests(unittest.TestCase):
         _, out = self.run_cli("return", book_id)
         self.assertIn("доступна", out)
 
+    def test_domain_error_returns_exit_code_1(self):
+        err = io.StringIO()
+        from contextlib import redirect_stderr
+        with redirect_stderr(err):
+            code, _ = self.run_cli("return", "unknown")
+        self.assertEqual(code, 1)
+        self.assertIn("не знайдено", err.getvalue())
+
 
 if __name__ == "__main__":
     unittest.main()

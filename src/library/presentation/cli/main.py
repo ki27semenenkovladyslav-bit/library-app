@@ -6,6 +6,7 @@ import sys
 from typing import List, Optional
 
 from library.application.dto import AddBookRequest, BookDto
+from library.domain.exceptions import DomainError
 from library.infrastructure.settings import Settings
 from library.presentation.composition import build_container
 
@@ -42,6 +43,14 @@ def build_parser() -> argparse.ArgumentParser:
 
 def main(argv: Optional[List[str]] = None) -> int:
     args = build_parser().parse_args(argv)
+    try:
+        return _run(args)
+    except DomainError as error:
+        print(f"Помилка: {error}", file=sys.stderr)
+        return 1
+
+
+def _run(args: argparse.Namespace) -> int:
     app = build_container(Settings.load(args.config))
 
     if args.command == "add":
